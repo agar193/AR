@@ -745,7 +745,7 @@ this.onmessage = function (e) {
             return;
         }
     }
-};
+}; 
 
 var next = null;
 
@@ -759,11 +759,13 @@ function load(msg) {
     // test if the msg.param (the incoming url) is an http or https path
     var regexC = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#()?&//=]*)/igm
     var reC = regexC.test(msg.param);
+	 console.log('msg param:', msg.param);
     if (reC == true) {
         camUrl = msg.param;
     } else if (reC == false) {
         camUrl = basePath + '/' + msg.param;
     }
+	 console.log('cam url:', camUrl);
     var onLoad = function () {
         ar = new ARController(msg.pw, msg.ph, param);
         var cameraMatrix = ar.getCameraMatrix();
@@ -777,12 +779,12 @@ function load(msg) {
             nftMarkerUrl = basePath + '/' + msg.marker;
         }
         ar.loadNFTMarker(nftMarkerUrl, function (markerId) {
-			 
+			 console.log('Error in loading marker on Worker', markerId);
+			  console.log('Error in loading marker on Worker', nftMarkerUrl);
             ar.trackNFTMarkerId(markerId);
             postMessage({ type: 'endLoading' })
         }, function (err) {
-			console.log('Error in loading marker on Worker', markerId);
-			  console.log('Error in loading marker on Worker', nftMarkerUrl);
+			
             console.log('Error in loading marker on Worker', err);
         });
 
